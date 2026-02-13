@@ -18,3 +18,29 @@ dependencies {
 application {
     mainClass.set("com.marcpellicer.tema4gradle.Main")
 }
+
+tasks.register<Exec>("ollamaVersion") {
+    group = "custom"
+    if (System.getProperty("os.name").lowercase().contains("win")) {
+        commandLine("cmd", "/c", "ollama --version")
+    } else {
+        commandLine("ollama", "--version")
+    }
+}
+
+tasks.register<Exec>("ollamaPs") {
+    group = "custom"
+    if (System.getProperty("os.name").lowercase().contains("win")) {
+        commandLine("cmd", "/c", "ollama ps")
+    } else {
+        commandLine("ollama", "ps")
+    }
+}
+
+tasks.register("llmInfo") {
+    group = "custom"
+    dependsOn("ollamaVersion", "ollamaPs")
+    doLast {
+        println("Demo finalizada")
+    }
+}
